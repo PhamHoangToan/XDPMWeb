@@ -29,9 +29,15 @@ const Profile = () => {
 
   const loadOrders = async () => {
     const data = await fetchOrdersByUser();
-    setOrders(data.orders || []);
+    console.log("Kết quả fetchOrdersByUser:", data);
+  
+    if (data.success) {
+      setOrders(data.data || []);   
+    } else {
+      setOrders([]);  // hoặc set lỗi gì đó
+    }
   };
-
+  
   const loadReviews = async () => {
     const data = await fetchUserReviews();
     setReviews(data.reviews || []);

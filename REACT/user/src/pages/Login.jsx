@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api";
 
@@ -29,7 +29,10 @@ export function LoginForm() {
       console.log("Lỗi hiển thị:", result.message);
       setError(result.message);
     }
-    
+  };
+
+  const handleForgotPassword = () => {
+    navigate("/forgot-password"); 
   };
 
   return (
@@ -38,16 +41,41 @@ export function LoginForm() {
         <h2>Đăng Nhập</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <form onSubmit={handleLogin}>
-          <input type="email" placeholder="Email" value={email}
-            onChange={(e) => setEmail(e.target.value)} required />
-          <input type="password" placeholder="Mật khẩu" value={password}
-            onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Mật khẩu"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
+          {/* Nút Đăng Nhập */}
           <button type="submit">Đăng Nhập</button>
+
+          {/* Link hoặc button Quên mật khẩu */}
+          <div className="forgot-password">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="forgot-password-btn"
+            >
+              Quên mật khẩu?
+            </button>
+          </div>
+
           <div className="divider">Hoặc</div>
+
           <button className="google-btn">
-          <img src="/icon/google.svg" alt=""/> Đăng nhập với Google
+            <img src="/icon/google.svg" alt="" /> Đăng nhập với Google
           </button>
+
           <p className="switch-link">
             Chưa có tài khoản? <a href="/register">Đăng ký</a>
           </p>

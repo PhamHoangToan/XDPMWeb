@@ -9,7 +9,7 @@ import ProductDetail from "./pages/ProductDetail.jsx";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Footer from "./components/Footer";
-import Login from "./pages/Login.jsx";
+import LoginForm from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -18,6 +18,7 @@ import Contact from "./pages/Contact.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import OrderDetail from "./pages/OrderDetail.jsx";
 import Profile from "./pages/Profile.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx"
 
 function App() {
   const [ setUser] = useState(null);
@@ -37,7 +38,7 @@ function App() {
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginForm />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
@@ -45,6 +46,7 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order/:orderId" element={<OrderDetail />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
       <Footer />
     </BrowserRouter>

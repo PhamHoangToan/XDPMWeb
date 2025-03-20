@@ -7,6 +7,7 @@ const LOGIN_API_URL = "http://localhost:5000/api/users/login";
 const CART_API_URL = "http://localhost:5000/api/cart";
 const CART_API_URL1 = "http://localhost:5000/api/cart/cart";
 const ORDER_API_URL = "http://localhost:5000/api/order";
+const ORDERDetail_API_URL = "http://localhost:5000/api/orders/order-detail";
 const REGISTER_API_URL = "http://localhost:5000/api/users/register";
 export const registerUser = async (userData) => {
   try {
@@ -22,18 +23,52 @@ export const registerUser = async (userData) => {
     return { success: false, message: "Lỗi kết nối đến server" };
   }
 };
-export const fetchOrdersByUser = async () => {
-  const userId = localStorage.getItem("user_id"); // Lấy user_id từ localStorage
-  if (!userId) {
-    return { success: false, message: "Chưa đăng nhập" };
-  }
 
+export const fetchOrdersByUser = async () => {
   try {
-    const response = await axios.get(`${ORDER_API_URL}?user_id=${userId}`);
-    return response.data;
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.warn("Không tìm thấy token! Người dùng chưa đăng nhập.");
+      return {
+        success: false,
+        message: "Bạn chưa đăng nhập!",
+        data: [],
+      };
+    }
+
+    const response = await axios.get(`${ORDER_API_URL}/orders/my-orders`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Kết quả lấy đơn hàng:", response.data);
+
+    // Giả sử backend trả về { success: true, data: [...] }
+    return {
+      success: true,
+      data: response.data.data || [],
+    };
+
   } catch (error) {
-    console.error("Lỗi lấy thông tin user:", error);
-    return { success: false, message: "Lỗi kết nối đến server" };
+    console.error("Lỗi lấy đơn hàng:", error);
+
+    if (error.response) {
+      // Backend trả lỗi chi tiết
+      return {
+        success: false,
+        message: error.response.data.message || "Có lỗi xảy ra khi lấy đơn hàng",
+        data: [],
+      };
+    }
+
+    // Lỗi không có response (ví dụ: mất mạng, lỗi server chết)
+    return {
+      success: false,
+      message: "Lỗi kết nối đến server",
+      data: [],
+    };
   }
 };
 
@@ -71,32 +106,45 @@ export const fetchUserInfo = async () => {
 export const placeOrder = async (orderData) => {
   const token = localStorage.getItem("token");
 
+  // Validate cơ bản
+  if (!orderData || !Array.isArray(orderData.items) || orderData.items.length === 0) {
+    return {
+      success: false,
+      message: "Không có sản phẩm nào trong đơn hàng!",
+    };
+  }
+
   // Xử lý giá trị mặc định nếu thiếu
   const orderDate = orderData.date || new Date().toISOString().slice(0, 10); // yyyy-mm-dd
-  const orderNumber = orderData.number || 1; // default là 1 sản phẩm
+  const orderNumber = orderData.number || orderData.items.length; // số lượng sản phẩm
   const orderStatus = orderData.status || "Đang xử lý"; // mặc định là "Đang xử lý"
 
-  const orderDataWithDateNumberAndStatus = {
+  // Tạo payload gửi lên backend
+  const payload = {
     ...orderData,
     date: orderDate,
     number: orderNumber,
-    status: orderStatus
+    status: orderStatus,
+    // items đã có sẵn trong orderData
   };
 
   try {
     const response = await axios.post(
-      ORDER_API_URL,
-      orderDataWithDateNumberAndStatus,
+     `${ORDER_API_URL}/orders/full`, // backend API route tạo đơn hàng + chi tiết đơn hàng
+      payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
     if (!response.data.success) {
       console.error("Lỗi trả về từ server:", response.data);
-      return { success: false, message: response.data.message || "Có lỗi xảy ra khi đặt hàng" };
+      return {
+        success: false,
+        message: response.data.message || "Có lỗi xảy ra khi đặt hàng",
+      };
     }
 
     return response.data;
@@ -126,13 +174,26 @@ export const placeOrder = async (orderData) => {
 
 export const fetchOrderDetail = async (orderId) => {
   try {
-    const response = await axios.get(`${ORDER_API_URL}?order_id=${orderId}`);
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("Không tìm thấy token trong localStorage!");
+      return { success: false, message: "Bạn chưa đăng nhập." };
+    }
+
+    const response = await axios.get(`${ORDERDetail_API_URL}?order_id=${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     return response.data;
   } catch (error) {
     console.error("Lỗi lấy chi tiết đơn hàng:", error);
     return { success: false, message: "Lỗi kết nối đến server" };
   }
 };
+
 
 // Lấy giỏ hàng theo user_id
 export const getCart = async () => {
@@ -326,3 +387,26 @@ export const searchProducts = async (keyword) => {
 };
 
 
+export const forgotPassword = async (email) => {
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+    return res.data;
+  } catch (error) {
+    console.error("Lỗi forgotPassword:", error);
+    return { success: false, message: "Có lỗi xảy ra." };
+  }
+};
+
+export const resetPassword = async (email, otp, newPassword) => {
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/reset-password", {
+      email,
+      otp,
+      newPassword,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Lỗi resetPassword:", error);
+    return { success: false, message: "Có lỗi xảy ra." };
+  }
+};

@@ -8,12 +8,15 @@ const OrderDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("orderId param:", orderId); // kiểm tra giá trị param
     const getOrderDetail = async () => {
       const result = await fetchOrderDetail(orderId);
+      console.log("Kết quả trả về từ API:", result);
       setOrder(result.order);
     };
     getOrderDetail();
   }, [orderId]);
+  
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("vi-VN", {
