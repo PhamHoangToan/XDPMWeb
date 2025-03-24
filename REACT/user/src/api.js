@@ -378,13 +378,18 @@ export const fetchReviewsByProduct = async (id) => {
 //Tìm kiếm sản phẩm theo từ khóa
 export const searchProducts = async (keyword) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}?search=${encodeURIComponent(keyword)}`);
+    const response = await axios.get(`${API_BASE_URL}/search?keyword=${encodeURIComponent(keyword)}`);
     return response.data;
   } catch (error) {
     console.error("Lỗi tìm kiếm sản phẩm:", error);
-    return [];
+    return {
+      success: false,
+      message: "Lỗi tìm kiếm sản phẩm",
+      data: []
+    };
   }
 };
+
 
 
 export const forgotPassword = async (email) => {
