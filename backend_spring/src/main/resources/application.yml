@@ -29,3 +29,6 @@ jpa:
   hibernate:
     ddl-auto: update
   show-sql: true
+
+jwt:
+  secret: f3a1e0f5d0e123ab9c87a4d5e6b8f9c2a3b4c5d6e7f8091a2b3c4d5e6f7g8h9i

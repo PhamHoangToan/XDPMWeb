@@ -1,15 +1,31 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchProductsById, fetchReviewsByProductId,addToCart } from "../api";
+import {
+  fetchProductsById,
+  fetchReviewsByProductId,
+  addToCart,
+  submitReview,
+} from "../api";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [comment, setComment] = useState("");
   const [activeTab, setActiveTab] = useState("description");
 
   // Fetch sản phẩm và đánh giá
+  const getReviews = async () => {
+    try {
+      const data = await fetchReviewsByProductId(id);
+      console.log("Danh sách đánh giá:", data);
+      setReviews(data);
+    } catch (error) {
+      console.error("Lỗi khi lấy đánh giá:", error);
+    }
+  };
+
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -22,22 +38,13 @@ const ProductDetail = () => {
       }
     };
 
-    const getReviews = async () => {
-      try {
-        const data = await fetchReviewsByProductId(id);
-        console.log("Danh sách đánh giá:", data);
-        setReviews(data);
-      } catch (error) {
-        console.error("Lỗi khi lấy đánh giá:", error);
-      }
-    };
-
     getProducts();
     getReviews();
   }, [id]);
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
-  const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  const decreaseQuantity = () =>
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   if (!product) {
     return <p>Đang tải sản phẩm...</p>;
@@ -53,38 +60,43 @@ const ProductDetail = () => {
     image = "no-image.png",
   } = product;
 
-  
   const handleAddToCart = async (product_id, quantity) => {
     const result = await addToCart(product_id, quantity);
-  
+
     if (result.success) {
       alert("Đã thêm sản phẩm vào giỏ hàng!");
     } else {
       alert(result.message);
     }
   };
-  
-  // const handleAddToCart = async () => {
-  //   const userId = localStorage.getItem("user_id");
-  
-  //   if (!userId) {
-  //     alert("Bạn cần đăng nhập trước khi thêm vào giỏ hàng!");
-  //     return;
-  //   }
-  
-  //   const result = await addToCart(product, quantity);
-  
-  //   if (result.success) {
-  //     alert("Sản phẩm đã được thêm vào giỏ hàng!");
-  //   } else {
-  //     alert(result.message || "Có lỗi xảy ra!");
-  //   }
-  // };
-  
-  const handleReviewSubmit = (e) => {
+
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    // Xử lý gửi đánh giá ở đây...
-    alert("Chức năng gửi đánh giá chưa được phát triển.");
+
+    const userId = localStorage.getItem("user_id");
+    if (!userId) {
+      alert("Bạn cần đăng nhập để gửi đánh giá.");
+      return;
+    }
+
+    if (!comment.trim()) {
+      alert("Vui lòng nhập nội dung đánh giá.");
+      return;
+    }
+
+    const result = await submitReview({
+      user_id: parseInt(userId),
+      product_id: parseInt(id),
+      description: comment.trim(),
+    });
+
+    if (result.success) {
+      alert(result.message);
+      setComment(""); // reset
+      await getReviews(); // cập nhật lại danh sách đánh giá
+    } else {
+      alert(result.message);
+    }
   };
 
   return (
@@ -105,13 +117,19 @@ const ProductDetail = () => {
           <h2 className="product-name">{product_name}</h2>
           <p className="product-price">{price.toLocaleString()} đ</p>
           <p className="product-size">Kích cỡ: {size}</p>
-          <p className="product-category">Danh mục: <span>{category_name}</span></p>
+          <p className="product-category">
+            Danh mục: <span>{category_name}</span>
+          </p>
 
           {/* Tăng giảm số lượng */}
           <div className="quantity-container">
-            <button className="btn-quantity" onClick={decreaseQuantity}>−</button>
+            <button className="btn-quantity" onClick={decreaseQuantity}>
+              −
+            </button>
             <span className="quantity">{quantity}</span>
-            <button className="btn-quantity" onClick={increaseQuantity}>+</button>
+            <button className="btn-quantity" onClick={increaseQuantity}>
+              +
+            </button>
           </div>
 
           {/* Nút thêm vào giỏ hàng */}
@@ -127,7 +145,9 @@ const ProductDetail = () => {
       {/* Tabs mô tả & đánh giá */}
       <div className="product-tabs mt-4">
         <button
-          className={`tab-button ${activeTab === "description" ? "active" : ""}`}
+          className={`tab-button ${
+            activeTab === "description" ? "active" : ""
+          }`}
           onClick={() => setActiveTab("description")}
         >
           Mô tả
@@ -157,7 +177,12 @@ const ProductDetail = () => {
           <div className="review-form">
             <h4>Thêm đánh giá của bạn</h4>
             <form onSubmit={handleReviewSubmit}>
-              <textarea placeholder="Viết đánh giá..." required />
+              <textarea
+                placeholder="Viết đánh giá..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                required
+              />
               <button type="submit">Gửi đánh giá</button>
             </form>
           </div>

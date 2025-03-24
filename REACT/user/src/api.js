@@ -432,3 +432,43 @@ export const fetchReviewsByProductId = async (productId) => {
     return [];
   }
 };
+
+export const submitReview = async ({ user_id, product_id, description }) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(
+      REVIEWS_API_URL,
+      {
+        user_id,
+        product_id,
+        description,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    return {
+      success: true,
+      message: "Đánh giá đã được gửi thành công!",
+      data: response.data,
+    };
+  } catch (error) {
+    console.error("Lỗi khi gửi đánh giá:", error);
+
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Lỗi khi gửi đánh giá",
+      };
+    }
+
+    return {
+      success: false,
+      message: "Lỗi kết nối đến server",
+    };
+  }
+};
