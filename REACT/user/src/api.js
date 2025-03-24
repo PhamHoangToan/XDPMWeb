@@ -1,14 +1,16 @@
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5000/api/products";
-const CATEGORY_API_URL = "http://localhost:5000/categories.php";
-const REVIEWS_API_URL = "http://localhost:5000/reviews.php";
+const CATEGORY_API_URL = "http://localhost:8081/api/categories";
+const REVIEWS_API_URL = "http://localhost:8081/api/reviews";
 const LOGIN_API_URL = "http://localhost:5000/api/users/login";
 const CART_API_URL = "http://localhost:5000/api/cart";
 const CART_API_URL1 = "http://localhost:5000/api/cart/cart";
 const ORDER_API_URL = "http://localhost:5000/api/order";
 const ORDERDetail_API_URL = "http://localhost:5000/api/orders/order-detail";
 const REGISTER_API_URL = "http://localhost:5000/api/users/register";
+
+
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(REGISTER_API_URL, userData);
@@ -413,5 +415,20 @@ export const resetPassword = async (email, otp, newPassword) => {
   } catch (error) {
     console.error("Lỗi resetPassword:", error);
     return { success: false, message: "Có lỗi xảy ra." };
+  }
+};
+
+
+
+
+
+
+export const fetchReviewsByProductId = async (productId) => {
+  try {
+    const response = await axios.get(`http://localhost:8081/api/reviews/product/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi lấy đánh giá sản phẩm:", error);
+    return [];
   }
 };

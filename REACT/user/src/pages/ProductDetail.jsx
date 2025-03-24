@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchProductsById, fetchReviewsByProduct,addToCart } from "../api";
+import { fetchProductsById, fetchReviewsByProductId,addToCart } from "../api";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -24,7 +24,7 @@ const ProductDetail = () => {
 
     const getReviews = async () => {
       try {
-        const data = await fetchReviewsByProduct(id);
+        const data = await fetchReviewsByProductId(id);
         console.log("Danh sách đánh giá:", data);
         setReviews(data);
       } catch (error) {
