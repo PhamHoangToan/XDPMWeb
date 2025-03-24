@@ -154,7 +154,7 @@ const Checkout = () => {
                   <tr key={item.id}>
                     <td>{item.product_name}</td>
                     <td>{item.quantity}</td>
-                    <td>{item.price} đ</td>
+                    <td>{formatCurrency((item.price * item.quantity)) }đ</td>
                   </tr>
                 ))}
               </tbody>

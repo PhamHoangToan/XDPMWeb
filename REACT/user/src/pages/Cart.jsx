@@ -61,10 +61,10 @@ const Cart = () => {
     }).format(value);
   };
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity)*1000, 0);
   const shippingFee = 30000;
   const finalTotal = totalPrice + shippingFee;
-
+  
   return (
     <div className="cart-container">
       <h2 className="cart-title">Giỏ hàng</h2>
@@ -86,7 +86,7 @@ const Cart = () => {
               </div>
               <div className="col-md-5 d-flex flex-column justify-content-center">
                 <h5 className="cart-item-name">{item.product_name}</h5>
-                <p className="text-muted">{formatCurrency(item.price)} đ</p>
+                <p className="text-muted">{formatCurrency(item.price * 1000)} đ</p>
               </div>
               <div className="col-md-2 quantity-container">
                 <button
@@ -105,7 +105,7 @@ const Cart = () => {
               </div>
               <div className="col-md-2">
                 <span className="fw-bold">
-                  {formatCurrency(item.price * item.quantity)} đ
+                  {formatCurrency((item.price * item.quantity)*1000)} đ
                 </span>
               </div>
               <div className="col-md-1">
