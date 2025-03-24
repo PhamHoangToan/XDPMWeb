@@ -193,7 +193,6 @@ const ProductDetail = () => {
               reviews.map((review) => (
                 <div className="review" key={review.review_id}>
                   <p className="review-author">{review.username}</p>
-                  <p className="review-date">{review.created_at}</p>
                   <p className="review-text">{review.description}</p>
                 </div>
               ))

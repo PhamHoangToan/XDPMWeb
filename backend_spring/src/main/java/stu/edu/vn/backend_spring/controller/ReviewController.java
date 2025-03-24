@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import stu.edu.vn.backend_spring.dto.ReviewRequest;
+import stu.edu.vn.backend_spring.dto.ReviewResponse;
 import stu.edu.vn.backend_spring.entity.ReviewEntity;
 import stu.edu.vn.backend_spring.service.JwtService;
 import stu.edu.vn.backend_spring.service.ReviewService;
@@ -29,8 +30,8 @@ public class ReviewController {
     private JwtService jwtService;
 
     @GetMapping("/product/{id}")
-    public List<ReviewEntity> getAllReviewProduct(@PathVariable("id") int productId) {
-        return reviewService.getReviewsByProductId(productId);
+    public ResponseEntity<List<ReviewResponse>> getAllReviewProduct(@PathVariable("id") int productId) {
+        return ResponseEntity.ok(reviewService.getReviewsByProductId(productId));
     }
 
     @PostMapping(produces = "application/json; charset=UTF-8")
@@ -40,7 +41,7 @@ public class ReviewController {
         String token = authHeader.replace("Bearer ", "");
         Integer userId = jwtService.getUserIdFromToken(token);
 
-        ReviewEntity review = reviewService.addReview(userId, request.getOrderId(), request.getProductId(),
+        ReviewEntity review = reviewService.addReview(userId, request.getProductId(),
                 request.getDescription());
         return ResponseEntity.ok(review);
     }

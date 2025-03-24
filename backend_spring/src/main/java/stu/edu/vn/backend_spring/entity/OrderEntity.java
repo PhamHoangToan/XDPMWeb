@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,7 +19,7 @@ public class OrderEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private UserEntity user;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = true)
     private LocalDateTime date;
 
     @Column(name = "number", nullable = false)
@@ -32,5 +33,8 @@ public class OrderEntity {
 
     @Column(name = "payment", nullable = false)
     private String payment;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItemEntity> orderItems;
 
 }

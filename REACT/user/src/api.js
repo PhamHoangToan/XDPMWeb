@@ -446,8 +446,9 @@ export const submitReview = async ({ user_id, product_id, description }) => {
       },
       {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
+        
       }
     );
 

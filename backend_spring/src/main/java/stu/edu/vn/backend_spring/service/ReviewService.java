@@ -3,6 +3,7 @@ package stu.edu.vn.backend_spring.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import stu.edu.vn.backend_spring.dto.ReviewResponse;
 import stu.edu.vn.backend_spring.entity.OrderEntity;
 import stu.edu.vn.backend_spring.entity.ProductEntity;
 import stu.edu.vn.backend_spring.entity.ReviewEntity;
@@ -29,58 +31,58 @@ public class ReviewService {
     private OrderDetailRepo orderItemRepo;
 
     @Autowired
-    private OrderRepo orderRepo;
-
-    @Autowired
     private ProductRepo productRepo;
 
     @Autowired
+    private OrderRepo orderRepo;
+    @Autowired
     private UserRepo userRepo;
 
-    public List<ReviewEntity> getReviewsByProductId(int productId) {
+    public List<ReviewResponse> getReviewsByProductId(int productId) {
         ProductEntity product = productRepo.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        return reviewRepo.findByProduct(product);
+
+        List<ReviewEntity> reviews = reviewRepo.findByProduct(product);
+
+        return reviews.stream()
+                .map(r -> new ReviewResponse(
+                        r.getReview_id(),
+                        r.getUser().getUsername(), // ánh xạ username từ entity user
+                        r.getDescription()))
+                .collect(Collectors.toList());
     }
 
-    public ReviewEntity addReview(int userId, int orderId, int productId, String description) {
-        // ✅ Kiểm tra người dùng đã mua sản phẩm này chưa (dựa vào OrderItemEntity)
-        boolean hasPurchased = orderItemRepo.existsByUserIdAndProductId(userId, productId);
+    public ReviewEntity addReview(Integer userId, Integer productId, String description) {
+        // Kiểm tra người dùng đã mua sản phẩm chưa
+        boolean hasPurchased = orderItemRepo.hasUserPurchasedProduct(userId, productId);
         if (!hasPurchased) {
-            throw new IllegalStateException("Bạn chưa mua sản phẩm này, không thể đánh giá.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Bạn chưa mua sản phẩm này nên không thể đánh giá.");
         }
 
-        // ✅ Kiểm tra đã đánh giá chưa
-        boolean alreadyReviewed = reviewRepo.existsReview(userId, productId);
-        if (alreadyReviewed) {
-            throw new IllegalStateException("Bạn đã đánh giá sản phẩm này rồi.");
+        // Kiểm tra người dùng đã đánh giá sản phẩm này chưa
+        boolean hasReviewed = reviewRepo.hasUserReviewedProduct(userId, productId);
+        if (hasReviewed) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bạn đã đánh giá sản phẩm này rồi.");
         }
 
-        // ✅ Kiểm tra đơn hàng có tồn tại không
-        OrderEntity order = orderRepo.findById(orderId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Không tìm thấy đơn hàng"));
-
-        // ✅ Kiểm tra đơn hàng có đúng là của người dùng không
-        if (order.getUser().getUser_id() != userId) {
-            throw new RuntimeException("Bạn không có quyền đánh giá đơn hàng này");
+        boolean hasPurchaseddele = orderRepo.hasUserPurchasedAndDelivered(userId, productId);
+        if (!hasPurchaseddele) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Bạn chỉ có thể đánh giá sản phẩm sau khi đã nhận hàng.");
         }
 
-        // ✅ Kiểm tra sản phẩm có nằm trong đơn hàng không
-        boolean hasProductInOrder = orderItemRepo.existsByOrderIdAndProductId(orderId, productId);
-        if (!hasProductInOrder) {
-            throw new RuntimeException("Sản phẩm không tồn tại trong đơn hàng của bạn");
-        }
+        // Lấy thông tin user và product
+        UserEntity user = userRepo.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Người dùng không tồn tại."));
+        ProductEntity product = productRepo.findById(productId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sản phẩm không tồn tại."));
 
-        UserEntity user = userRepo.findById(userId).orElseThrow();
-        ProductEntity product = productRepo.findById(productId).orElseThrow();
-
+        // Tạo mới đánh giá
         ReviewEntity review = new ReviewEntity();
         review.setUser(user);
         review.setProduct(product);
-        review.setOrder(order); 
         review.setDescription(description);
-        review.setCreated_at(LocalDateTime.now());
-
         return reviewRepo.save(review);
     }
 
@@ -96,5 +98,5 @@ public class ReviewService {
         }
         return false;
     }
-    
-}    
+
+}

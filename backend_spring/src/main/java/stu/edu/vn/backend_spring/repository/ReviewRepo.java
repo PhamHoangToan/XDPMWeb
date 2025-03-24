@@ -17,4 +17,10 @@ public interface ReviewRepo extends JpaRepository<ReviewEntity, Integer> {
 
     @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM ReviewEntity r WHERE r.user.id = :userId AND r.product.id = :productId")
     boolean existsReview(@Param("userId") int userId, @Param("productId") int productId);
+
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END " +
+           "FROM ReviewEntity r " +
+           "WHERE r.user.id = :userId AND r.product.id = :productId")
+    boolean hasUserReviewedProduct(@Param("userId") int userId, @Param("productId") int productId);
+
 }
