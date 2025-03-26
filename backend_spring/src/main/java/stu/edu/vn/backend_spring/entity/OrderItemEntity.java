@@ -1,5 +1,7 @@
 package stu.edu.vn.backend_spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ public class OrderItemEntity {
 
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false)
+    @JsonIgnore 
     private OrderEntity order;
 
     @ManyToOne
