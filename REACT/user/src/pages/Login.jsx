@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { loginUser } from "../api";
+=======
+import { googleAuth, loginUser } from "../api";
+import { GoogleLogin } from "@react-oauth/google";
+>>>>>>> 33fab41 (add mint)
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
@@ -32,7 +37,40 @@ export function LoginForm() {
   };
 
   const handleForgotPassword = () => {
+<<<<<<< HEAD
     navigate("/forgot-password"); 
+=======
+    navigate("/forgot-password");
+  };
+
+  const handleGoogleSuccess = async (response) => {
+    console.log("Google Login Success:", response);
+    
+    try {
+      const result = await googleAuth(response.credential); // Call backend to authenticate with Google token
+      console.log("Google Auth Result:", result);
+
+      if (result.token) {
+        alert("Đăng nhập Google thành công!");
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("address", result.user.address);
+        localStorage.setItem("phone", result.user.phone);
+        localStorage.setItem("user_id", result.user.user_id);
+        localStorage.setItem("username", result.user.username);
+        navigate("/");
+        window.location.reload();
+      } else {
+        setError("Đăng nhập Google thất bại.");
+      }
+    } catch (err) {
+      setError("Có lỗi xảy ra khi đăng nhập với Google.");
+      console.error(err);
+    }
+  };
+
+  const handleError = () => {
+    console.log("Login Failed");
+>>>>>>> 33fab41 (add mint)
   };
 
   return (
@@ -72,10 +110,19 @@ export function LoginForm() {
 
           <div className="divider">Hoặc</div>
 
+<<<<<<< HEAD
           <button className="google-btn">
             <img src="/icon/google.svg" alt="" /> Đăng nhập với Google
           </button>
 
+=======
+          {/* <button className="google-btn">
+            <img src="/icon/google.svg" alt="" /> Đăng nhập với Google
+          </button> */}
+          <div>
+            <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleError} />
+          </div>
+>>>>>>> 33fab41 (add mint)
           <p className="switch-link">
             Chưa có tài khoản? <a href="/register">Đăng ký</a>
           </p>

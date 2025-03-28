@@ -415,3 +415,11 @@ export const resetPassword = async (email, otp, newPassword) => {
     return { success: false, message: "Có lỗi xảy ra." };
   }
 };
+<<<<<<< HEAD
+=======
+
+export const googleAuth = async(token) => {
+  const response = await axios.post("http://localhost:5000/api/users/gg",{token});
+  return response.data;
+}
+>>>>>>> 33fab41 (add mint)

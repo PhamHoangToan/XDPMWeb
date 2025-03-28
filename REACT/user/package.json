@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@react-oauth/google": "^0.12.1",
+>>>>>>> 33fab41 (add mint)
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "lucide-react": "^0.483.0",
@@ -29,6 +33,10 @@
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
     "sass": "^1.63.6",
+<<<<<<< HEAD
     "vite": "^6.1.0"
+=======
+    "vite": "^6.2.2"
+>>>>>>> 33fab41 (add mint)
   }
 }

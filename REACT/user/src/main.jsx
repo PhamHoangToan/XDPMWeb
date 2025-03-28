@@ -19,9 +19,17 @@ import Checkout from "./pages/Checkout.jsx";
 import OrderDetail from "./pages/OrderDetail.jsx";
 import Profile from "./pages/Profile.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx"
+<<<<<<< HEAD
 
 function App() {
   const [ setUser] = useState(null);
+=======
+import { Environment } from "../environments/environment.js";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+function App() {
+  const [user, setUser] = useState(null);
+>>>>>>> 33fab41 (add mint)
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -53,8 +61,18 @@ function App() {
   );
 }
 
+<<<<<<< HEAD
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
+=======
+const clientId = Environment.GG_CLIENT_ID;
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <GoogleOAuthProvider clientId={clientId}>
+      <App />
+    </GoogleOAuthProvider>
+>>>>>>> 33fab41 (add mint)
   </StrictMode>
 );
