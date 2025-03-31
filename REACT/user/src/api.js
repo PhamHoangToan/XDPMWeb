@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5000/api/products";
-const CATEGORY_API_URL = "http://localhost:5000/categories.php";
-const REVIEWS_API_URL = "http://localhost:5000/reviews.php";
+const CATEGORY_API_URL = "http://localhost:8081/api/categories";
+const REVIEWS_API_URL = "http://localhost:8081/api/reviews";
 const LOGIN_API_URL = "http://localhost:5000/api/users/login";
 const CART_API_URL = "http://localhost:5000/api/cart";
 const CART_API_URL1 = "http://localhost:5000/api/cart/cart";
@@ -427,6 +427,64 @@ export const resetPassword = async (email, otp, newPassword) => {
     return { success: false, message: "Có lỗi xảy ra." };
   }
 };
+
+
+
+
+
+
+
+export const fetchReviewsByProductId = async (productId) => {
+  try {
+    const response = await axios.get(`http://localhost:8081/api/reviews/product/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi lấy đánh giá sản phẩm:", error);
+    return [];
+  }
+};
+
+export const submitReview = async ({ user_id, product_id, description }) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(
+      REVIEWS_API_URL,
+      {
+        user_id,
+        product_id,
+        description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        
+      }
+    );
+
+    return {
+      success: true,
+      message: "Đánh giá đã được gửi thành công!",
+      data: response.data,
+    };
+  } catch (error) {
+    console.error("Lỗi khi gửi đánh giá:", error);
+
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Lỗi khi gửi đánh giá",
+      };
+    }
+
+    return {
+      success: false,
+      message: "Lỗi kết nối đến server",
+    };
+  }
+};
+
 export const getUserProfile = async (token) => {
   try {
     const response = await axios.get(`${API_URL}/me`, {
@@ -488,4 +546,5 @@ export const updateUserProfile = async (token, userData) => {
 //     return { success: false, message: "Lỗi khi xóa giỏ hàng" };
 //   }
 // };
+
 
