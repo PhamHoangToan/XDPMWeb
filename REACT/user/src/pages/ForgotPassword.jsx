@@ -6,7 +6,7 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState(""); // Thêm field xác nhận mật khẩu
+  const [confirmNewPassword, setConfirmNewPassword] = useState(""); 
   const [message, setMessage] = useState("");
   const [step, setStep] = useState(1);
   const navigate = useNavigate();

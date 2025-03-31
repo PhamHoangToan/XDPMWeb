@@ -9,8 +9,7 @@ const CART_API_URL1 = "http://localhost:5000/api/cart/cart";
 const ORDER_API_URL = "http://localhost:5000/api/order";
 const ORDERDetail_API_URL = "http://localhost:5000/api/orders/order-detail";
 const REGISTER_API_URL = "http://localhost:5000/api/users/register";
-
-
+const API_URL = "http://localhost:5000/api/users";
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(REGISTER_API_URL, userData);
@@ -215,7 +214,7 @@ export const getCart = async () => {
     return response.data;
   } catch (error) {
     console.error("Lỗi lấy giỏ hàng:", error);
-    return { success: false, message: "Lỗi kết nối đến server" };
+    return { success: false, message: "Giỏ hàng chưa có sản phẩm" };
   }
 };
 
@@ -240,7 +239,7 @@ export const addToCart = async (product_id, quantity) => {
     );
 
     if (response.data.success) {
-      alert("Thêm vào giỏ hàng thành công!");
+     
       return response.data;
     } else {
       alert(response.data.message);
@@ -392,17 +391,28 @@ export const searchProducts = async (keyword) => {
   }
 };
 
-
-
 export const forgotPassword = async (email) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
-    return res.data;
+    console.log("🔹 Sending forgot password request with email:", email);
+    const response = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+    console.log("Forgot password response:", response.data);
+    return response.data;
   } catch (error) {
-    console.error("Lỗi forgotPassword:", error);
-    return { success: false, message: "Có lỗi xảy ra." };
+    console.error(" Lỗi forgotPassword:", error);
+    throw error;
   }
 };
+
+
+// export const forgotPassword = async (email) => {
+//   try {
+//     const res = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+//     return res.data;
+//   } catch (error) {
+//     console.error("Lỗi forgotPassword:", error);
+//     return { success: false, message: "Có lỗi xảy ra." };
+//   }
+// };
 
 export const resetPassword = async (email, otp, newPassword) => {
   try {
@@ -417,6 +427,7 @@ export const resetPassword = async (email, otp, newPassword) => {
     return { success: false, message: "Có lỗi xảy ra." };
   }
 };
+
 
 
 
@@ -473,3 +484,67 @@ export const submitReview = async ({ user_id, product_id, description }) => {
     };
   }
 };
+
+export const getUserProfile = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};
+
+export const updateUserProfile = async (token, userData) => {
+  console.log("📤 Dữ liệu gửi lên server:", JSON.stringify(userData, null, 2)); // Log request
+
+  try {
+      const response = await axios.put("http://localhost:5000/api/users/update", userData, {
+          headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+          }
+      });
+
+      console.log("✅ Phản hồi từ server:", response.data); // Log response
+      return response.data;
+  } catch (error) {
+      console.error("❌ Lỗi khi gửi API:", error.response?.data || error.message);
+      throw error;
+  }
+};
+
+// export const createFullOrder = async (orderData) => {
+//   try {
+//     const token = localStorage.getItem("token");
+//     const response = await axios.post("http://localhost:5000/api/orders", orderData, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Lỗi khi tạo đơn hàng:", error);
+//     return { success: false, message: "Lỗi khi tạo đơn hàng" };
+//   }
+// };
+
+// export const clearCart = async () => {
+//   try {
+//     const token = localStorage.getItem("token");
+//     const response = await axios.delete("http://localhost:5000/api/cart/clear", {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Lỗi khi xóa giỏ hàng:", error);
+//     return { success: false, message: "Lỗi khi xóa giỏ hàng" };
+//   }
+// };
+
+
