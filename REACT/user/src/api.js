@@ -1,15 +1,15 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api/products";
+const API_BASE_URL = "https://backendweb-71rn.onrender.com/api/products";
 const CATEGORY_API_URL = "http://localhost:8081/api/categories";
 const REVIEWS_API_URL = "http://localhost:8081/api/reviews";
-const LOGIN_API_URL = "http://localhost:5000/api/users/login";
-const CART_API_URL = "http://localhost:5000/api/cart";
-const CART_API_URL1 = "http://localhost:5000/api/cart/cart";
-const ORDER_API_URL = "http://localhost:5000/api/order";
-const ORDERDetail_API_URL = "http://localhost:5000/api/orders/order-detail";
-const REGISTER_API_URL = "http://localhost:5000/api/users/register";
-const API_URL = "http://localhost:5000/api/users";
+const LOGIN_API_URL = "https://backendweb-71rn.onrender.com/api/users/login";
+const CART_API_URL = "https://backendweb-71rn.onrender.com/api/cart";
+const CART_API_URL1 = "https://backendweb-71rn.onrender.com/api/cart/cart";
+const ORDER_API_URL = "https://backendweb-71rn.onrender.com/api/order";
+const ORDERDetail_API_URL = "https://backendweb-71rn.onrender.com/api/orders/order-detail";
+const REGISTER_API_URL = "https://backendweb-71rn.onrender.com/api/users/register";
+const API_URL = "https://backendweb-71rn.onrender.com/api/users";
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(REGISTER_API_URL, userData);
