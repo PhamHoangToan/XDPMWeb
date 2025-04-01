@@ -4,7 +4,7 @@ import {
   fetchProductsById,
   fetchReviewsByProductId,
   addToCart,
-  submitReview,
+ 
 } from "../api";
 
 const ProductDetail = () => {
@@ -12,7 +12,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [comment, setComment] = useState("");
+ // const [comment, setComment] = useState("");
   const [activeTab, setActiveTab] = useState("description");
 
   // Fetch sản phẩm và đánh giá
@@ -70,34 +70,34 @@ const ProductDetail = () => {
     }
   };
 
-  const handleReviewSubmit = async (e) => {
-    e.preventDefault();
+  // const handleReviewSubmit = async (e) => {
+  //   e.preventDefault();
 
-    const userId = localStorage.getItem("user_id");
-    if (!userId) {
-      alert("Bạn cần đăng nhập để gửi đánh giá.");
-      return;
-    }
+  //   const userId = localStorage.getItem("user_id");
+  //   if (!userId) {
+  //     alert("Bạn cần đăng nhập để gửi đánh giá.");
+  //     return;
+  //   }
 
-    if (!comment.trim()) {
-      alert("Vui lòng nhập nội dung đánh giá.");
-      return;
-    }
+  //   if (!comment.trim()) {
+  //     alert("Vui lòng nhập nội dung đánh giá.");
+  //     return;
+  //   }
 
-    const result = await submitReview({
-      user_id: parseInt(userId),
-      product_id: parseInt(id),
-      description: comment.trim(),
-    });
+  //   const result = await submitReview({
+  //     user_id: parseInt(userId),
+  //     product_id: parseInt(id),
+  //     description: comment.trim(),
+  //   });
 
-    if (result.success) {
-      alert(result.message);
-      setComment(""); // reset
-      await getReviews(); // cập nhật lại danh sách đánh giá
-    } else {
-      alert(result.message);
-    }
-  };
+  //   if (result.success) {
+  //     alert(result.message);
+  //     setComment(""); // reset
+  //     await getReviews(); // cập nhật lại danh sách đánh giá
+  //   } else {
+  //     alert(result.message);
+  //   }
+  // };
 
   return (
     <div className="container mt-5">
@@ -176,7 +176,7 @@ const ProductDetail = () => {
           {/* Form đánh giá */}
           <div className="review-form">
             <h4>Thêm đánh giá của bạn</h4>
-            <form onSubmit={handleReviewSubmit}>
+            {/* <form onSubmit={handleReviewSubmit}>
               <textarea
                 placeholder="Viết đánh giá..."
                 value={comment}
@@ -184,7 +184,7 @@ const ProductDetail = () => {
                 required
               />
               <button type="submit">Gửi đánh giá</button>
-            </form>
+            </form> */}
           </div>
 
           {/* Danh sách đánh giá */}

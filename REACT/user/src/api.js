@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API_BASE_URL = "https://backendweb-71rn.onrender.com/api/products";
-const CATEGORY_API_URL = "http://localhost:8081/api/categories";
-const REVIEWS_API_URL = "http://localhost:8081/api/reviews";
+// const CATEGORY_API_URL = "http://localhost:8081/api/categories";
+// const REVIEWS_API_URL = "http://localhost:8081/api/reviews";
 const LOGIN_API_URL = "https://backendweb-71rn.onrender.com/api/users/login";
 const CART_API_URL = "https://backendweb-71rn.onrender.com/api/cart";
 const CART_API_URL1 = "https://backendweb-71rn.onrender.com/api/cart/cart";
@@ -73,20 +73,20 @@ export const fetchOrdersByUser = async () => {
   }
 };
 
-export const fetchUserReviews = async () => {
-  const userId = localStorage.getItem("user_id"); // Lấy user_id từ localStorage
-  if (!userId) {
-    return { success: false, message: "Chưa đăng nhập" };
-  }
+// export const fetchUserReviews = async () => {
+//   const userId = localStorage.getItem("user_id"); // Lấy user_id từ localStorage
+//   if (!userId) {
+//     return { success: false, message: "Chưa đăng nhập" };
+//   }
 
-  try {
-    const response = await axios.get(`${REVIEWS_API_URL}?user_id=${userId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Lỗi lấy thông tin user:", error);
-    return { success: false, message: "Lỗi kết nối đến server" };
-  }
-};
+//   try {
+//     const response = await axios.get(`${REVIEWS_API_URL}?user_id=${userId}`);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Lỗi lấy thông tin user:", error);
+//     return { success: false, message: "Lỗi kết nối đến server" };
+//   }
+// };
 
 // Lấy thông tin user theo user_id
 export const fetchUserInfo = async () => {
@@ -336,15 +336,15 @@ export const fetchRandomProducts = async () => {
 };
 
 //Lấy danh sách danh mục
-export const fetchCategories = async () => {
-  try {
-    const response = await axios.get(CATEGORY_API_URL);
-    return response.data;
-  } catch (error) {
-    console.error("Lỗi lấy danh mục:", error);
-    return [];
-  }
-};
+// export const fetchCategories = async () => {
+//   try {
+//     const response = await axios.get(CATEGORY_API_URL);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Lỗi lấy danh mục:", error);
+//     return [];
+//   }
+// };
 
 //Lấy chi tiết sản phẩm theo ID
 export const fetchProductsById = async (id) => {
@@ -364,17 +364,17 @@ export const fetchProductsById = async (id) => {
 };
 
 
-//Lấy đánh giá theo sản phẩm
-export const fetchReviewsByProduct = async (id) => {
-  try {
-    const response = await axios.get(`${REVIEWS_API_URL}?id=${id}`);
-    console.log("API response:", response.data); // Debug dữ liệu
-    return response.data;
-  } catch (error) {
-    console.error("Lỗi lấy đánh giá:", error);
-    return null;
-  }
-};
+// //Lấy đánh giá theo sản phẩm
+// export const fetchReviewsByProduct = async (id) => {
+//   try {
+//     const response = await axios.get(`${REVIEWS_API_URL}?id=${id}`);
+//     console.log("API response:", response.data); // Debug dữ liệu
+//     return response.data;
+//   } catch (error) {
+//     console.error("Lỗi lấy đánh giá:", error);
+//     return null;
+//   }
+// };
 
 //Tìm kiếm sản phẩm theo từ khóa
 export const searchProducts = async (keyword) => {
@@ -394,7 +394,7 @@ export const searchProducts = async (keyword) => {
 export const forgotPassword = async (email) => {
   try {
     console.log("🔹 Sending forgot password request with email:", email);
-    const response = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+    const response = await axios.post("https://backendweb-71rn.onrender.com/api/auth/forgot-password", { email });
     console.log("Forgot password response:", response.data);
     return response.data;
   } catch (error) {
@@ -416,7 +416,7 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (email, otp, newPassword) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/reset-password", {
+    const res = await axios.post("https://backendweb-71rn.onrender.com/api/auth/reset-password", {
       email,
       otp,
       newPassword,
@@ -444,46 +444,46 @@ export const fetchReviewsByProductId = async (productId) => {
   }
 };
 
-export const submitReview = async ({ user_id, product_id, description }) => {
-  try {
-    const token = localStorage.getItem("token");
+// export const submitReview = async ({ user_id, product_id, description }) => {
+//   try {
+//     const token = localStorage.getItem("token");
 
-    const response = await axios.post(
-      REVIEWS_API_URL,
-      {
-        user_id,
-        product_id,
-        description,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+//     const response = await axios.post(
+//       REVIEWS_API_URL,
+//       {
+//         user_id,
+//         product_id,
+//         description,
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
         
-      }
-    );
+//       }
+//     );
 
-    return {
-      success: true,
-      message: "Đánh giá đã được gửi thành công!",
-      data: response.data,
-    };
-  } catch (error) {
-    console.error("Lỗi khi gửi đánh giá:", error);
+//     return {
+//       success: true,
+//       message: "Đánh giá đã được gửi thành công!",
+//       data: response.data,
+//     };
+//   } catch (error) {
+//     console.error("Lỗi khi gửi đánh giá:", error);
 
-    if (error.response) {
-      return {
-        success: false,
-        message: error.response.data.message || "Lỗi khi gửi đánh giá",
-      };
-    }
+//     if (error.response) {
+//       return {
+//         success: false,
+//         message: error.response.data.message || "Lỗi khi gửi đánh giá",
+//       };
+//     }
 
-    return {
-      success: false,
-      message: "Lỗi kết nối đến server",
-    };
-  }
-};
+//     return {
+//       success: false,
+//       message: "Lỗi kết nối đến server",
+//     };
+//   }
+// };
 
 export const getUserProfile = async (token) => {
   try {

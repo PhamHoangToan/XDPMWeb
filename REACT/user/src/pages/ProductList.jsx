@@ -1,10 +1,10 @@
 import  { useEffect, useState } from "react";
-import { fetchProducts, fetchCategories } from "../api";
+import { fetchProducts } from "../api";
 import { useNavigate } from "react-router-dom";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  //const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate = useNavigate();
 
@@ -16,13 +16,13 @@ const ProductList = () => {
     getProducts();
   }, []);
 
-  useEffect(() => {
-    const getCategories = async () => {
-      const data = await fetchCategories();
-      setCategories(data);
-    };
-    getCategories();
-  }, []);
+  // useEffect(() => {
+  //   const getCategories = async () => {
+  //     const data = await fetchCategories();
+  //     setCategories(data);
+  //   };
+  //   getCategories();
+  // }, []);
 
   // Lọc sản phẩm theo danh mục
   const filteredProducts = selectedCategory
@@ -48,7 +48,7 @@ const ProductList = () => {
 
       <div className="category-box">
         <ul className="category-list">
-          {categories.map((category) => (
+          {/* {categories.map((category) => (
             <li
               key={category.category_id}
               className={`category-item ${selectedCategory === category.category_id ? "active" : ""}`}
@@ -57,7 +57,7 @@ const ProductList = () => {
               {category.name}
                <span className="underline"></span>
             </li>
-          ))}
+          ))} */}
         </ul>
       </div>
 

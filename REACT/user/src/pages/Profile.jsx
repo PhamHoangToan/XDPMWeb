@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { fetchOrdersByUser, fetchUserReviews } from "../api";
+import { fetchOrdersByUser } from "../api";
 
 const Profile = () => {
   const [orders, setOrders] = useState([]);
-  const [reviews, setReviews] = useState([]);
+ // const [reviews, setReviews] = useState([]);
   const [showOrders, setShowOrders] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
   const [error, setError] = useState(null);
@@ -38,10 +38,10 @@ const Profile = () => {
     }
   };
   
-  const loadReviews = async () => {
-    const data = await fetchUserReviews();
-    setReviews(data.reviews || []);
-  };
+  // const loadReviews = async () => {
+  //   const data = await fetchUserReviews();
+  //   setReviews(data.reviews || []);
+  // };
 
   return (
     <div className="profile-container">
