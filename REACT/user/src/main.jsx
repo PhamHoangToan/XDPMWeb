@@ -19,6 +19,8 @@ import Checkout from "./pages/Checkout.jsx";
 import OrderDetail from "./pages/OrderDetail.jsx";
 import Profile from "./pages/Profile.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx"
+import UpdateProfile from "./pages/UpdateProfile.jsx";
+
 
 function App() {
   const [ setUser] = useState(null);
@@ -47,6 +49,8 @@ function App() {
         <Route path="/order/:orderId" element={<OrderDetail />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/update-profile" element={<UpdateProfile />} />
+
       </Routes>
       <Footer />
     </BrowserRouter>

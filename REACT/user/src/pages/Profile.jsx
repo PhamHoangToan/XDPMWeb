@@ -46,6 +46,12 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <h2 className="profile-title">Tài Khoản Của Tôi</h2>
+      <button
+        className="profile-btn update-profile-btn"
+        onClick={() => navigate("/update-profile")}
+      >
+        Cập nhật thông tin
+      </button>
 
       {error && <p className="profile-error">{error}</p>}
 
