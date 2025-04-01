@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addCategory } from "../api";
 
 const AddCategory = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!name.trim()) {
+      alert("Tên danh mục không được để trống!");
+      return;
+    }
 
-    // Giả lập thêm dữ liệu thành công
-    setTimeout(() => {
+    const result = await addCategory({ name });
+    if (result) {
       alert("Danh mục đã được thêm thành công!");
-      setName(""); // Reset input
-      navigate("/category-list"); // Chuyển hướng về trang danh mục
-    }, 500);
+      navigate("/category-list");
+    } else {
+      alert("Thêm danh mục thất bại!");
+    }
   };
 
   return (

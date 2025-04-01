@@ -92,7 +92,7 @@ const AdminDashboard = () => {
           <a href="/review-list"><FaThumbsUp /> Đánh giá</a>
         </div>
 
-        <a href="/carts" className="menu-item" onClick={() => toggleMenu("carts")}>
+        <a href="#" className="menu-item" onClick={() => toggleMenu("carts")}>
           <FaShoppingBag /> Quản lý giỏ hàng
         </a>
         <div className={`submenu ${openMenu.carts ? "active" : ""}`}>

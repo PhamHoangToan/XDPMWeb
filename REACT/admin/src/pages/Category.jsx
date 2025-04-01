@@ -1,26 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchCategories, deleteCategory } from "../api";
+
 const Category = () => {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
 
-  const [categories, setCategories] = useState([
-    { category_id: 1, name: "Bánh ngọt" },
-    { category_id: 2, name: "Bánh mặn" },
-    { category_id: 3, name: "Bánh kem" },
-    { category_id: 4, name: "Bánh trung thu" },
-    { category_id: 5, name: "Bánh mì" },
-  ]);
+  // Lấy danh sách danh mục từ API
+  const loadCategories = async () => {
+    const data = await fetchCategories();
+    console.log(data);  // In ra dữ liệu để kiểm tra
+    if (data.success) {
+      setCategories(data.data);  // Set dữ liệu vào state nếu thành công
+    } else {
+      alert(data.message);  // Hiển thị thông báo lỗi nếu không thành công
+    }
+  };
+  
 
-  const handleDelete = (id) => {
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  // Xóa danh mục
+  const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa danh mục này không?")) {
-      setCategories(categories.filter((category) => category.category_id !== id));
+      const success = await deleteCategory(id);
+      if (success) {
+        setCategories(categories.filter((category) => category.category_id !== id));
+      } else {
+        alert("Xóa danh mục thất bại!");
+      }
     }
   };
 
   return (
     <div className="category-container">
-      <h1 className="category-title">Danh mục sản phẩm</h1>
-
       <button onClick={() => navigate("/add-category")} className="category-btn-primary">
         Thêm danh mục mới
       </button>

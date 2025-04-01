@@ -42,7 +42,6 @@ const Customers = () => {
 
   return (
     <div className="user-container">
-      <h1>Danh sách khách hàng</h1>
       <table className="user-table">
         <thead>
           <tr>
@@ -68,7 +67,7 @@ const Customers = () => {
               <td>{user.created_at}</td>
               <td>
                 <button
-                  onClick={() => navigate(`/customer-edit/${user.user_id}`)}
+                  onClick={() => navigate(`/customers-edit/${user.user_id}`)}
                   className="user-btn-edit"
                 >
                   Sửa
