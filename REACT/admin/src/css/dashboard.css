@@ -111,6 +111,7 @@ header h4 {
     background: linear-gradient(to right, #7e4b36, #3c1f17);
     padding-top: 20px;
     transition: width 0.3s ease;
+    
 }
 
 .menu-item {
@@ -284,15 +285,17 @@ main {
 .review-container {
     max-width: 1200px;
     padding: 20px;
-    margin-left: 200px;
+    margin-left: 300px;
 }
 
 .reviews-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(250px, 1fr)); /* Cột tự động co giãn */
+    grid-template-columns: repeat(3, minmax(100px, 1fr)); /* Cột tự động co giãn */
     /* Mỗi hàng có 3 cột */
     gap: 30px;
     justify-content: center;
+    margin-left: 300px;
+    margin-right: 50px;
 }
 
 .review-card {
@@ -982,7 +985,7 @@ td {
     margin: 20px;
     font-family: Arial, sans-serif;
     margin-top: 80px;
-    margin-left: 150px;
+    margin-left: 200px;
 }
 
 .filter-form {
@@ -1213,7 +1216,7 @@ td {
 
 .product-list table td:first-child,
 table th:first-child {
-    width: 50%;
+    width: 10%;
 }
 
 .product-list table td:nth-child(2),
@@ -1335,7 +1338,7 @@ table th:last-child {
 /************************************ Giỏ hàng ***************************************/
 .cart-list-wrapper {
     display: grid;
-    grid-template-columns: repeat(3, minmax(400px, 1fr)); /* 3 cột */
+    grid-template-columns: repeat(3, minmax(200px, 1fr)); /* 3 cột */
     gap: 20px;
     padding: 20px 20px;
     margin-left: 250px;
@@ -1444,11 +1447,11 @@ table th:last-child {
 .product-container {
     padding-top: 50px;
     display: grid;
-    grid-template-columns: repeat(3, minmax(250px, 1fr)); /* Cột tự động co giãn */
+    grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Cột tự động co giãn */
     gap: 20px;
     justify-content: center;
     transition: margin-left 0.3s ease;
-    margin-left: 230px;
+    margin-left: 280px;
 }
 
 .product-card {
@@ -1538,6 +1541,7 @@ table th:last-child {
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    width: 80%;
 }
 
 button:hover {
@@ -1638,7 +1642,7 @@ button:hover {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     /* margin: 500px auto; */
-    margin-top: 250px;
+    margin-top: 100px;
 }
 
 .form-container h2 {
