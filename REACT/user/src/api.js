@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5000/api/products";
-const CATEGORY_API_URL = "https://backend-web-hung-8.onrender.com/api/categories";
-const REVIEWS_API_URL = "https://backend-web-hung-8.onrender.com/api/reviews";
+const CATEGORY_API_URL = "https://backend-web-hung-14.onrender.com/api/categories";
+const REVIEWS_API_URL = "https://backend-web-hung-14.onrender.com/api/reviews";
 const LOGIN_API_URL = "http://localhost:5000/api/users/login";
 const CART_API_URL = "http://localhost:5000/api/cart";
 const CART_API_URL1 = "http://localhost:5000/api/cart/cart";

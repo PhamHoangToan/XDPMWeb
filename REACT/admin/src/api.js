@@ -1,9 +1,9 @@
 import axios from "axios";
 
 // Địa chỉ API backend
-const STATISTICS_API_URL = "http://localhost:8081/api/statistics";
-const CATEGORY_API_URL = "http://localhost:8081/api/categories";
-const BASE_URL = "http://localhost:8081/api/reviews/admin";
+const STATISTICS_API_URL = "https://backend-web-hung-14.onrender.com/api/statistics";
+const CATEGORY_API_URL = "https://backend-web-hung-14.onrender.com/api/categories";
+const BASE_URL = "https://backend-web-hung-14.onrender.com/api/reviews/admin";
 
 export const fetchAllReviews = async () => {
     try {
